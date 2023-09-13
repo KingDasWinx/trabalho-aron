@@ -1,0 +1,66 @@
+body {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.bolinha {
+    position: static;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.bb {
+    width: 18px;
+    height: 18px;
+    background-color: aliceblue;
+    border-radius: 50%;
+}
+
+.red{
+    background-color: red;
+}
+.ye {
+    background-color: yellow;
+}
+.gr {
+    background-color: green;
+}
+
+.terminal {
+    background-color: #111;
+    border: 2px solid #333;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.shell {
+    padding: 15px;
+}
+
+.output {
+    color: #0f0;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+.input-line {
+    display: flex;
+}
+
+.prompt {
+    color: #0ff;
+}
+
+.input {
+    background-color: transparent;
+    border: none;
+    color: #0f0;
+    font-family: monospace;
+    outline: none;
+}
