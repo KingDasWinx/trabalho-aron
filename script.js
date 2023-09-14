@@ -46,7 +46,7 @@ function startCountdown() {
 function executeCommand(command) {
     switch (command) {
         case 'help':
-            output.innerHTML += 'Comandos disponiveis: help, ex1(valor), ex2(AnoNovo), ex3(Em breve), ex4(Em breve).<br>';
+            output.innerHTML += 'Comandos disponiveis: help, clear, ex1(valor), ex2(AnoNovo), ex3(Em breve), ex4(Em breve).<br>';
             break;
         case 'clear':
             // Limpa a saída
