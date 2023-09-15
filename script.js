@@ -1,8 +1,12 @@
 const output = document.querySelector('.output');
 const input = document.querySelector('.input');
+
 let countdownInterval;
 let awaitingInput = false;
-
+let esperandoValor = false;
+let esperandoValor2 = false;
+let esperandoLogin1 = false;
+let esperandoLogin2 = false;
 
 input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -12,6 +16,14 @@ input.addEventListener('keydown', (event) => {
         if (command) {
             if (awaitingInput) {
                 handleValueInput(command);
+            } else if (esperandoValor) {
+              handleValor1(command);
+            } else if (esperandoValor2) {
+              handleValor2(command);
+            } else if (esperandoLogin1) {
+              handleLogin1(command);
+            } else if (esperandoLogin2) {
+              handleLogin2(command);
             } else {
                 output.innerHTML += '<span class="prompt">$</span> ' + command + '<br>';
                 executeCommand(command);
@@ -21,8 +33,18 @@ input.addEventListener('keydown', (event) => {
 });
 
 function promptForValue() {
-    output.innerHTML += '<span class="prompt">$</span> Digite um valor de 1 a 10:<br>';
+    output.innerHTML += '<span class="prompt">$</span> Valor - Digite um valor de 1 a 10:<br>';
     awaitingInput = true;
+}
+
+function promptSoma() {
+  output.innerHTML += '<span class="prompt">$</span> Soma - Digite o primeiro valor:<br>';
+  esperandoValor = true;
+}
+
+function promptLogin() {
+  output.innerHTML += '<span class="prompt">$</span> Login - Digite seu nome:<br>';
+  esperandoLogin1 = true;
 }
 
 function startCountdown() {
@@ -59,10 +81,10 @@ function executeCommand(command) {
             startCountdown();
             break;
         case 'ex3':
-            output.innerHTML += 'Infelizmente não consegui termina :( <br>';
+            promptLogin();
             break;
         case 'ex4':
-            output.innerHTML += 'tentei, mas ficou tudo bugado dai desisti :( <br>';
+            promptSoma();
             break;
         default:
             output.innerHTML += 'Comando invalido: ' + command + '<br>';
@@ -78,4 +100,86 @@ function handleValueInput(value) {
         output.innerHTML += 'O valor informado foi: ' + parsedValue + '<br>';
         awaitingInput = false;
     }
+}
+
+let primeiroValor;
+
+function handleValor1(value) {
+    
+    console.log("Entrou");
+    const num1 = value;
+    console.log(num1);
+    if(event.key === "Enter") {
+      if(num1 === '13') {
+        output.innerHTML += 'Escolha outro numero!<br>'
+      } else {
+        if (num1 === '') {
+        console.log("Nadinha de nada");
+        output.innerHTML += 'Bota uma valor<br>';
+      }
+      primeiroValor = parseFloat(num1);
+      input.value = '';
+      output.innerHTML += 'Primeiro número: ' + primeiroValor + '<br>';
+      output.innerHTML += '<span class="prompt">$</span> Digite o segundo valor:<br>';
+      esperandoValor = false;
+      esperandoValor2 = true;
+      }
+    }
+      
+}
+
+
+function handleValor2(value) {
+    const num2 = value;
+    console.log(num2);
+    if (event.key === "Enter") {
+      if(num2 === '13') {
+        output.innerHTML += 'Escolha outro numero!<br>'
+      } else {
+        if (num2 === '') {
+          output.innerHTML += 'Bota um valor</br>';
+        }
+        console.log(num2);
+        const segundoValor = parseFloat(num2);
+        input.value = '';
+        const sum = primeiroValor + segundoValor;
+        output.innerHTML += 'Segundo valor: ' + segundoValor + '<br>';
+        if (sum === 13) {
+          output.innerHTML += 'Error. Tente novamente mais tarde!<br>';
+          esperandoValor2 = false;
+        } else {
+          output.innerHTML += 'A soma é: ' + sum + '<br>';
+          esperandoValor2 = false;
+        }
+      }
+    }
+}
+
+let usernameLogin;
+
+function handleLogin1(value) {
+  const username = value;
+  if (event.key === "Enter") {
+    if (username === '') {
+      output.innerHTML += '<span class="prompt">$</span> Escolha um nome!<br>';
+    }
+    usernameLogin = username;
+    input.value = '';
+    output.innerHTML += '<span class="prompt">$</span> Olá ' + usernameLogin +' informe uma senha:<br>';
+    esperandoLogin1 = false;
+    esperandoLogin2 = true;
+  }
+}
+
+function handleLogin2(value) {
+  const pssw = value;
+  if (event.key === "Enter") {
+    if (pssw === usernameLogin) {
+      output.innerHTML += 'Informe uma senha diferente do nome<br>';
+    } else {
+      output.innerHTML += 'Obrigado, login feito com sucesso.<br><br><strong>Usuario<strong> - ' + usernameLogin + '<br><strong>Senha<strong> - ' + pssw;
+      esperandoLogin2 = false;
+    }
+    
+  }
 }
