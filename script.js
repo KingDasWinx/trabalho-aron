@@ -7,6 +7,7 @@ let esperandoValor = false;
 let esperandoValor2 = false;
 let esperandoLogin1 = false;
 let esperandoLogin2 = false;
+let esperandoToDo = false;
 
 input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -24,6 +25,8 @@ input.addEventListener('keydown', (event) => {
               handleLogin1(command);
             } else if (esperandoLogin2) {
               handleLogin2(command);
+            } else if (esperandoToDo) {
+              handleToDoList(command);
             } else {
                 output.innerHTML += '<span class="prompt">$</span> ' + command + '<br>';
                 executeCommand(command);
@@ -40,6 +43,15 @@ function promptForValue() {
 function promptSoma() {
   output.innerHTML += '<span class="prompt">$</span> Soma - Digite o primeiro valor:<br>';
   esperandoValor = true;
+}
+
+function promptToDoList() {
+    output.innerHTML += '<span class="prompt">$</span> To-Do List - Digite uma tarefa:<br>';
+    esperandoValor = false;
+    esperandoValor2 = false;
+    esperandoLogin1 = false;
+    esperandoLogin2 = false;
+    esperandoToDo = true;
 }
 
 function promptLogin() {
@@ -68,7 +80,7 @@ function startCountdown() {
 function executeCommand(command) {
     switch (command) {
         case 'help':
-            output.innerHTML += 'Comandos disponiveis: help, clear, ex1(valor), ex2(AnoNovo), ex3(Em breve), ex4(Em breve).<br>';
+            output.innerHTML += 'Comandos disponiveis: help, clear, ex1(valor), ex2(AnoNovo), ex3(Login), ex4(Soma), ex5(To-do List).<br>';
             break;
         case 'clear':
             // Limpa a saída
@@ -86,10 +98,25 @@ function executeCommand(command) {
         case 'ex4':
             promptSoma();
             break;
+        case 'ex5':
+            promptToDoList();
+            break;
+        case 'lista':
+            displayTasksFromLocalStorage();
+            break;
         default:
             output.innerHTML += 'Comando invalido: ' + command + '<br>';
             break;
     }
+}
+
+function promptToDoList() {
+    output.innerHTML += '<span class="prompt">$</span> To-Do List - Digite uma tarefa:<br>';
+    esperandoValor = false;
+    esperandoValor2 = false;
+    esperandoLogin1 = false;
+    esperandoLogin2 = false;
+    esperandoToDo = true;
 }
 
 function handleValueInput(value) {
@@ -182,4 +209,38 @@ function handleLogin2(value) {
     }
     
   }
+}
+
+let tasks = [];
+
+function handleToDoList(value) {
+    const task = value;
+    if (event.key === "Enter") {
+        if (task === '') {
+            output.innerHTML += 'Por favor, insira uma tarefa válida.<br>';
+        } else if (task === "quit") {
+          esperandoToDo = false;
+        } else {
+            tasks.push(task);
+            saveTasksToLocalStorage();
+            output.innerHTML += 'Tarefa adicionada: ' + task + '<br>';
+            esperandoToDo = false;
+        }
+    }
+}
+
+function saveTasksToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function displayTasksFromLocalStorage() {
+    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (savedTasks && savedTasks.length > 0) {
+        output.innerHTML += 'Tarefas salvas:<br>';
+        savedTasks.forEach((task, index) => {
+            output.innerHTML += (index + 1) + '. ' + task + '<br>';
+        });
+    } else {
+        output.innerHTML += 'Nenhuma tarefa salva.<br>';
+    }
 }
